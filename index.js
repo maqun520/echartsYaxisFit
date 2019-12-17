@@ -38,10 +38,37 @@ app.title = '折柱混合';
     data2 = [-12108.81, 701.43, 1280.75, -2109.83, -18693.95],
     data3 = [0, -11.07, -52.95, -42.25, -84.02],
     data4 = [0, 105.79, 82.59, -264.73, -786.04]
- 
+ var ymin1 = 0,
+     ymax1 = 0,
+     ymin2 = 0,
+     ymax2 = 0,
+     scale = 0;
   var Min1 = calMin([data1, data2]), Min2 = calMin([data3, data4]),
     Max1 = calMax([data1, data2]), Max2 = calMax([data3, data4]);
- 
+  if (Min1 < 0 && Max1 > 0) {
+              scale = Math.abs(Max1) / Math.abs(Min1);
+              ymin1 = Min1;
+              ymax1 = Max1;
+              if (Max2 > 0 && Min2 < 0) {
+                if (Math.abs(Max2) / Math.abs(Min2) > scale) {
+                  ymax2 = Max2;
+                  ymin2 = -(Max2 / scale);
+                } else {
+                  ymax2 = -(Min2 / scale);
+                  ymin2 = Min2;
+                }
+              } else {
+                ymin2 = -Max2 / scale;
+                ymax2 = Max2;
+              }
+            } else {
+              scale = Math.abs(Max2) / Math.abs(Min2);
+              ymin2 = Min2;
+              ymax2 = Max2;
+              ymin1 = -Max1 / scale;
+              ymax1 = Max1;
+            }
+            // console.log(Max1,Min1,'左',Max2,Min2,'右',ymax1,ymin1,ymax2,ymin2)
   option = {
     grid: {left: '100', right: '100', bottom: '100', top: '100'},
     color: ['#0698d6', '#fd8246', '#d773b4', '#41ac7c', '#e86367', '#aada9c'],
@@ -63,8 +90,8 @@ app.title = '折柱混合';
       axisLine: {show: false},
       axisTick: {show: false},
       axisLabel: {verticalAlign: "bottom", color: "#999999"},
-      min: Min1,
-      max: Max1,
+      min: ymin1,
+      max: ymax1,
       splitNumber: 5,
       interval: (Max1 - Min1) / 5
     }, {
@@ -74,8 +101,8 @@ app.title = '折柱混合';
       axisLine: {show: false},
       axisTick: {show: false},
       axisLabel: {verticalAlign: "bottom", color: "#999999"},
-      min: Min2,
-      max: Max2,
+      min: ymin2,
+      max: ymax2,
       splitNumber: 5,
       interval: (Max2 - Min2) / 5
  
