@@ -45,6 +45,7 @@ app.title = '折柱混合';
      scale = 0;
   var Min1 = calMin([data1, data2]), Min2 = calMin([data3, data4]),
     Max1 = calMax([data1, data2]), Max2 = calMax([data3, data4]);
+if(JSON.stringify(data1.concat(data2,data3,data4)).indexOf("-") != -1){
   if (Min1 < 0 && Max1 > 0) {
               scale = Math.abs(Max1) / Math.abs(Min1);
               ymin1 = Min1;
@@ -68,6 +69,14 @@ app.title = '折柱混合';
               ymin1 = -Max1 / scale;
               ymax1 = Max1;
             }
+ 
+}else{
+ ymin1 = Min1
+     ymax1 = Max1
+     ymin2 = Min2
+     ymax2 = Max2Z
+}
+
             // console.log(Max1,Min1,'左',Max2,Min2,'右',ymax1,ymin1,ymax2,ymin2)
   option = {
     grid: {left: '100', right: '100', bottom: '100', top: '100'},
@@ -92,8 +101,8 @@ app.title = '折柱混合';
       axisLabel: {verticalAlign: "bottom", color: "#999999"},
       min: ymin1,
       max: ymax1,
-      splitNumber: 5,
-      interval: (Max1 - Min1) / 5
+//       splitNumber: 5,
+//       interval: (Max1 - Min1) / 5
     }, {
       name: '单位：%',
       type: 'value',
@@ -103,8 +112,8 @@ app.title = '折柱混合';
       axisLabel: {verticalAlign: "bottom", color: "#999999"},
       min: ymin2,
       max: ymax2,
-      splitNumber: 5,
-      interval: (Max2 - Min2) / 5
+//       splitNumber: 5,
+//       interval: (Max2 - Min2) / 5
  
     }],
     series: [{name: '营业收入', type: 'bar', barGap: 0, barWidth: 30, data: data1},
